@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { WiCloudy } from "weather-icons-react";
 import { MdSearch } from "react-icons/md";
 import { FaWind, FaWater } from "react-icons/fa";
 import "./App.css";
@@ -10,20 +11,23 @@ function App() {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState(null);
   const apiKey =
-    "at_WdHFxk0MfhURjtsOD2o52dzi9IgX8";
+    "at_eGmsiLn6QROiQkRg8mik1BcXzc47Z";
 
   const apiUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=`;
-  useEffect(()=>{
-      fetch(apiUrl)
-        .then(async (res) => await res.json())
-        .then(async (data) => {
-          await setResult(data);
-        })
-        .catch((err) => console.log(err));
-  },[])
   useEffect(() => {
+    fetch(apiUrl)
+      .then(async (res) => await res.json())
+      .then(async (data) => {
+        await setResult(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
+    console.log(result)
     fetch(
-      `http://api.weatherapi.com/v1/current.json?key=7d7a4054d2fc408cb6e120053242511&q=${result ? result?.location?.city : search }`
+      `https://api.weatherapi.com/v1/current.json?key=7d7a4054d2fc408cb6e120053242511&q=${
+        result ? result?.location?.city : search
+      }`
     )
       .then((res) => res.json())
       .then(async (data) => {
@@ -31,19 +35,16 @@ function App() {
       })
       .catch((err) => console.log(err));
   }, [result]);
+
+
   useEffect(() => {
-    console.log(info);
     setWeather(info.current);
     setLocation(info.location);
   }, [info]);
 
-  useEffect(() => {
-    console.log(search);
-  }, [search]);
-
   function fetchInfo() {
     fetch(
-      `http://api.weatherapi.com/v1/current.json?key=7d7a4054d2fc408cb6e120053242511&q=${search}`
+      `https://api.weatherapi.com/v1/current.json?key=7d7a4054d2fc408cb6e120053242511&q=${search}`
     )
       .then((res) => res.json())
       .then(async (data) => {
@@ -55,6 +56,9 @@ function App() {
   return (
     <>
       <div className="container w-[370px] min-h-20 p-6 flex flex-col gap-4 justify-center items-end rounded-2xl bg-gradient-to-br from-[#0cbdbd] from-5% to-[#031d1d]">
+        <h1 className="text-center flex items-center  m-auto text-2xl font-extrabold text-white ">
+          Weather App <WiCloudy className=" text-3xl" />
+        </h1>
         <form
           className=" w-full p-1 px-3 flex justify-between items-center"
           onSubmit={(e) => {
@@ -133,8 +137,9 @@ function App() {
           title="Weather API"
           className="text-blue-500 underline"
         >
-          WeatherAPI.com
+          WeatherAPI.com 
         </a>
+         {" "} & <a href="https://geo.ipify.org" title="Ipify" className="text-blue-500 underline">Ipify</a>
       </h3>
     </>
   );
