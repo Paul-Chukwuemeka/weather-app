@@ -3,7 +3,6 @@ import { WiCloudy } from "weather-icons-react";
 import { MdSearch } from "react-icons/md";
 import { FaWind, FaWater } from "react-icons/fa";
 import "./App.css";
-
 function App() {
   const [info, setinfo] = useState([]);
   const [weather, setWeather] = useState([]);
